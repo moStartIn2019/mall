@@ -1,29 +1,79 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Router from 'vue-router'
+// import HelloWorld from '@/components/HelloWorld'
+// router懒加载写法
+const Home = () => import('views/home/Home');
+const Category = () => import('views/category/Category');
+const Shopcart = () => import('views/shopcart/Shopcart');
+const Profile = () => import('views/profile/Profile');
+const Detail = () => import('views/detail/Detail')
 
-Vue.use(VueRouter)
+Vue.use(Router)
 
-  const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
+const router = new Router({
+  routes: [
+    {
+      path: '',
+      redirect: '/home'
 
-const router = new VueRouter({
+    },
+    {
+      path: '/home',
+      name: 'Home',
+      component: Home,
+      meta: {
+        title: '首页'
+      }
+    },
+    {
+      path: '/category',
+      name: 'Category',
+      component: Category,
+      // meta: {
+      //   title: '关于'
+      // },
+      // beforeEnter: (to, from, next) => {
+      //   // console.log('about,beforeEnter');
+      //   next();
+      // }
+    },
+    {
+      path: '/shopcart',
+      name: 'Shopcart',
+      component: Shopcart
+    },
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: Profile
+    },
+    {
+      // 非query方式
+      // path: '/detail/did=:iid',
+      
+      // query方式
+      path: '/detail',
+      name: 'Detail',
+      component: Detail
+    }
+  //   {
+  //     path: '/user/:userId',
+  //     name: 'User',
+  //     component: User,
+  //     meta: {
+  //       title: '用户'
+  //     }
+  //   }
+  ],
   mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+  // linkActiveClass: 'active',
 })
 
-export default router
+// router.beforeEach((to, from, next) => {
+//   document.title = to.matched[0].meta.title;
+//   // console.log(to);
+//   next();
+// });
+
+// 传到main.js的Vue实例
+export default router;

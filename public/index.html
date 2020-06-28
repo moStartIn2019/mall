@@ -3,9 +3,26 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!-- 有些安卓版本对user-scalable不生效，需加上maximum-scale和minimum-scale -->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,maximum-scale=1.0,minimum-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
+    <script>
+      ~function anonymous(window) {
+        let computedRem = function() {
+          let body = document.documentElement || document.body,
+              winW = body.clientWidth,
+              desW = 640;
+          if(winW >= desW) {
+            body.style.fontSize = 100 + 'px';
+            return;
+          }
+          body.style.fontSize = winW / desW * 100 + 'px';
+        };
+        computedRem();
+        window.addEventListener('resize', computedRem);
+      }(window);
+    </script>
   </head>
   <body>
     <noscript>
